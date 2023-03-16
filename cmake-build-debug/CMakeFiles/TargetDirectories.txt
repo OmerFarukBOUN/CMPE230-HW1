@@ -1,0 +1,3 @@
+D:/odevler/bruh/cmake-build-debug/CMakeFiles/bruh.dir
+D:/odevler/bruh/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/odevler/bruh/cmake-build-debug/CMakeFiles/rebuild_cache.dir

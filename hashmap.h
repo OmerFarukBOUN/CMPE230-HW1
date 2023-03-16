@@ -19,4 +19,5 @@ typedef struct HashMap {
 } HashMap;
 
 HashMap initializeHashMap();
-void add_new_element(HashMap * hashMap, char * str, int value);
+void add_new_element(HashMap hashMap, char * str, int value);
+int getValue(HashMap, char *);
