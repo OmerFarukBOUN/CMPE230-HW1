@@ -1,11 +1,6 @@
 #pragma once
 
 #include <string.h>
-#ifndef CMPE230HW1_HASHMAP_H
-#define CMPE230HW1_HASHMAP_H
-
-#endif //CMPE230HW1_HASHMAP_H
-
 
 typedef struct HashMapEntry {
     char *key;
@@ -19,5 +14,5 @@ typedef struct HashMap {
 } HashMap;
 
 HashMap initializeHashMap();
-void add_new_element(HashMap hashMap, char * str, int value);
-int getValue(HashMap, char *);
+void add_new_element(HashMap *hashMap, char * key, int value);
+int getValue(HashMap *, char *);

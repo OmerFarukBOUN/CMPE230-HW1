@@ -1,8 +1,8 @@
-# Install script for directory: D:/odevler/bruh
+# Install script for directory: D:/odevler/cmpe230hw1
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/bruh")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/cmpe230hw1")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "D:/odevler/bruh/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "D:/odevler/cmpe230hw1/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

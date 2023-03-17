@@ -11,7 +11,7 @@
 # =============================================================================
 
 # =============================================================================
-# Project: bruh
+# Project: cmpe230hw1
 # Configurations: Debug
 # =============================================================================
 
@@ -39,52 +39,52 @@ include CMakeFiles/rules.ninja
 #############################################
 # Logical path to working directory; prefix for absolute paths.
 
-cmake_ninja_workdir = D$:/odevler/bruh/cmake-build-debug/
+cmake_ninja_workdir = D$:/odevler/cmpe230hw1/cmake-build-debug/
 # =============================================================================
-# Object build statements for EXECUTABLE target bruh
+# Object build statements for EXECUTABLE target cmpe230hw1
 
 
 #############################################
-# Order-only phony target for bruh
+# Order-only phony target for cmpe230hw1
 
-build cmake_object_order_depends_target_bruh: phony || CMakeFiles/bruh.dir
+build cmake_object_order_depends_target_cmpe230hw1: phony || CMakeFiles/cmpe230hw1.dir
 
-build CMakeFiles/bruh.dir/deneme.c.obj: C_COMPILER__bruh_Debug D$:/odevler/bruh/deneme.c || cmake_object_order_depends_target_bruh
-  DEP_FILE = CMakeFiles\bruh.dir\deneme.c.obj.d
+build CMakeFiles/cmpe230hw1.dir/deneme.c.obj: C_COMPILER__cmpe230hw1_Debug D$:/odevler/cmpe230hw1/deneme.c || cmake_object_order_depends_target_cmpe230hw1
+  DEP_FILE = CMakeFiles\cmpe230hw1.dir\deneme.c.obj.d
   FLAGS = -g -fdiagnostics-color=always -std=gnu11
-  OBJECT_DIR = CMakeFiles\bruh.dir
-  OBJECT_FILE_DIR = CMakeFiles\bruh.dir
+  OBJECT_DIR = CMakeFiles\cmpe230hw1.dir
+  OBJECT_FILE_DIR = CMakeFiles\cmpe230hw1.dir
 
-build CMakeFiles/bruh.dir/hashmap.c.obj: C_COMPILER__bruh_Debug D$:/odevler/bruh/hashmap.c || cmake_object_order_depends_target_bruh
-  DEP_FILE = CMakeFiles\bruh.dir\hashmap.c.obj.d
+build CMakeFiles/cmpe230hw1.dir/hashmap.c.obj: C_COMPILER__cmpe230hw1_Debug D$:/odevler/cmpe230hw1/hashmap.c || cmake_object_order_depends_target_cmpe230hw1
+  DEP_FILE = CMakeFiles\cmpe230hw1.dir\hashmap.c.obj.d
   FLAGS = -g -fdiagnostics-color=always -std=gnu11
-  OBJECT_DIR = CMakeFiles\bruh.dir
-  OBJECT_FILE_DIR = CMakeFiles\bruh.dir
+  OBJECT_DIR = CMakeFiles\cmpe230hw1.dir
+  OBJECT_FILE_DIR = CMakeFiles\cmpe230hw1.dir
 
 
 # =============================================================================
-# Link build statements for EXECUTABLE target bruh
+# Link build statements for EXECUTABLE target cmpe230hw1
 
 
 #############################################
-# Link the executable bruh.exe
+# Link the executable cmpe230hw1.exe
 
-build bruh.exe: C_EXECUTABLE_LINKER__bruh_Debug CMakeFiles/bruh.dir/deneme.c.obj CMakeFiles/bruh.dir/hashmap.c.obj
+build cmpe230hw1.exe: C_EXECUTABLE_LINKER__cmpe230hw1_Debug CMakeFiles/cmpe230hw1.dir/deneme.c.obj CMakeFiles/cmpe230hw1.dir/hashmap.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
-  OBJECT_DIR = CMakeFiles\bruh.dir
+  OBJECT_DIR = CMakeFiles\cmpe230hw1.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
-  TARGET_FILE = bruh.exe
-  TARGET_IMPLIB = libbruh.dll.a
-  TARGET_PDB = bruh.exe.dbg
+  TARGET_FILE = cmpe230hw1.exe
+  TARGET_IMPLIB = libcmpe230hw1.dll.a
+  TARGET_PDB = cmpe230hw1.exe.dbg
 
 
 #############################################
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D D:\odevler\bruh\cmake-build-debug && "D:\Program Files\JetBrains\CLion 2022.3.2\bin\cmake\win\x64\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
+  COMMAND = cmd.exe /C "cd /D D:\odevler\cmpe230hw1\cmake-build-debug && "D:\Program Files\JetBrains\CLion 2022.3.2\bin\cmake\win\x64\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -95,7 +95,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D D:\odevler\bruh\cmake-build-debug && "D:\Program Files\JetBrains\CLion 2022.3.2\bin\cmake\win\x64\bin\cmake.exe" --regenerate-during-build -SD:\odevler\bruh -BD:\odevler\bruh\cmake-build-debug"
+  COMMAND = cmd.exe /C "cd /D D:\odevler\cmpe230hw1\cmake-build-debug && "D:\Program Files\JetBrains\CLion 2022.3.2\bin\cmake\win\x64\bin\cmake.exe" --regenerate-during-build -SD:\odevler\cmpe230hw1 -BD:\odevler\cmpe230hw1\cmake-build-debug"
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -105,7 +105,7 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # =============================================================================
 # Target aliases.
 
-build bruh: phony bruh.exe
+build cmpe230hw1: phony cmpe230hw1.exe
 
 # =============================================================================
 # Folder targets.
@@ -113,9 +113,9 @@ build bruh: phony bruh.exe
 # =============================================================================
 
 #############################################
-# Folder: D:/odevler/bruh/cmake-build-debug
+# Folder: D:/odevler/cmpe230hw1/cmake-build-debug
 
-build all: phony bruh.exe
+build all: phony cmpe230hw1.exe
 
 # =============================================================================
 # Built-in targets
@@ -124,14 +124,14 @@ build all: phony bruh.exe
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja: RERUN_CMAKE | CMakeCache.txt CMakeFiles/3.24.2/CMakeCCompiler.cmake CMakeFiles/3.24.2/CMakeRCCompiler.cmake CMakeFiles/3.24.2/CMakeSystem.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeCInformation.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeCommonLanguageInclude.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeGenericSystem.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeInitializeConfigs.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeLanguageInformation.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeRCInformation.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeSystemSpecificInformation.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeSystemSpecificInitialize.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Compiler/CMakeCommonCompilerMacros.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Compiler/GNU-C.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Compiler/GNU.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Platform/Windows-GNU-C-ABI.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Platform/Windows-GNU-C.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Platform/Windows-GNU.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Platform/Windows-windres.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Platform/Windows.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Platform/WindowsPaths.cmake D$:/odevler/bruh/CMakeLists.txt
+build build.ninja: RERUN_CMAKE | CMakeCache.txt CMakeFiles/3.24.2/CMakeCCompiler.cmake CMakeFiles/3.24.2/CMakeRCCompiler.cmake CMakeFiles/3.24.2/CMakeSystem.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeCInformation.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeCommonLanguageInclude.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeGenericSystem.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeInitializeConfigs.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeLanguageInformation.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeRCInformation.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeSystemSpecificInformation.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeSystemSpecificInitialize.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Compiler/CMakeCommonCompilerMacros.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Compiler/GNU-C.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Compiler/GNU.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Platform/Windows-GNU-C-ABI.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Platform/Windows-GNU-C.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Platform/Windows-GNU.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Platform/Windows-windres.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Platform/Windows.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Platform/WindowsPaths.cmake D$:/odevler/cmpe230hw1/CMakeLists.txt
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build CMakeCache.txt CMakeFiles/3.24.2/CMakeCCompiler.cmake CMakeFiles/3.24.2/CMakeRCCompiler.cmake CMakeFiles/3.24.2/CMakeSystem.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeCInformation.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeCommonLanguageInclude.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeGenericSystem.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeInitializeConfigs.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeLanguageInformation.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeRCInformation.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeSystemSpecificInformation.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeSystemSpecificInitialize.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Compiler/CMakeCommonCompilerMacros.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Compiler/GNU-C.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Compiler/GNU.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Platform/Windows-GNU-C-ABI.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Platform/Windows-GNU-C.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Platform/Windows-GNU.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Platform/Windows-windres.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Platform/Windows.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Platform/WindowsPaths.cmake D$:/odevler/bruh/CMakeLists.txt: phony
+build CMakeCache.txt CMakeFiles/3.24.2/CMakeCCompiler.cmake CMakeFiles/3.24.2/CMakeRCCompiler.cmake CMakeFiles/3.24.2/CMakeSystem.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeCInformation.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeCommonLanguageInclude.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeGenericSystem.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeInitializeConfigs.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeLanguageInformation.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeRCInformation.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeSystemSpecificInformation.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/CMakeSystemSpecificInitialize.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Compiler/CMakeCommonCompilerMacros.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Compiler/GNU-C.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Compiler/GNU.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Platform/Windows-GNU-C-ABI.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Platform/Windows-GNU-C.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Platform/Windows-GNU.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Platform/Windows-windres.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Platform/Windows.cmake D$:/Program$ Files/JetBrains/CLion$ 2022.3.2/bin/cmake/win/x64/share/cmake-3.24/Modules/Platform/WindowsPaths.cmake D$:/odevler/cmpe230hw1/CMakeLists.txt: phony
 
 
 #############################################
