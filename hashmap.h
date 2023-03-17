@@ -13,6 +13,6 @@ typedef struct HashMap {
     int size;
 } HashMap;
 
-HashMap initializeHashMap();
-void add_new_element(HashMap *hashMap, char * key, int value);
-int getValue(HashMap *, char *);
+HashMap initializeHashMap(); // allocates hashmap's array
+void add_new_element(HashMap *hashMap, char * key, int value); // adds new element to the given hashmap
+int getValue(HashMap *, char *); // gets the value of given string
