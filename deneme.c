@@ -16,9 +16,9 @@ HashMap functions;
 
 int main() {
     variables = initializeHashMap();
-    solveStatement(mainStatement);
     scanf("%s", mainStatement);
-    printf("%s", mainStatement);
+    //solveStatement(mainStatement);
+    printf("%d", getString());
 }
 
 /*
@@ -68,6 +68,7 @@ int getString() {
             error = TRUE;
             return 0;
         }
+        counter++;
         return solution;
     }
     // checks if it is a <var> | func(<expression>, <expression>) | not(<expression>)
@@ -166,6 +167,7 @@ int getString() {
                     error = TRUE;
                     return 0;
                 }
+                counter++;
                 right %= 16;
                 return (left >> right) || (left << (16 - right));
             }
@@ -176,6 +178,10 @@ int getString() {
                 counter++;
                 dismissblank();
                 left = solveExpr(lastforfunc);
+                if (mainStatement[counter] != ')') {
+                    error = TRUE;
+                    return 0;
+                }
                 return ~left;
             }
         }
@@ -183,7 +189,12 @@ int getString() {
     }
     // checks if it is a <num>
     if ((mainStatement[counter] >= '0' && mainStatement[counter] <= '9')) {
-
+        int solution = 0;
+        while ((mainStatement[counter] >= '0' && mainStatement[counter] <= '9')) {
+            solution = 10*solution + (mainStatement[counter]-'0');
+            counter++;
+        }
+        return solution;
     }
 }
 
@@ -198,6 +209,7 @@ int solveExpr(char *last) {
     dismissblank();
 
     dismissblank();
+    return 5;
 }
 
 // gets ooperation
