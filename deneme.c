@@ -241,3 +241,19 @@ void dismissblank() {
 int solveFunc() {
 
 }
+
+void darlandum(int* left, int* right) {
+    counter++;
+    dismissblank();
+    *left = solveExpr(lastforfunc);
+    if (mainStatement[counter] != ',') {
+        error = TRUE;
+        return;
+    }
+    counter++;
+    *right = solveExpr(lastforparanthesis);
+    if (mainStatement[counter] != ')') {
+        error = TRUE;
+        return;
+    }
+}
