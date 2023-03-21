@@ -25,7 +25,7 @@ int hash(char *str, int size) {
     int hash = 0;
     int i = 0;
     while (str[i] != 0) {
-        hash = ((hash << 3) + str[i] - 'a' + 1) % size;
+        hash = ((hash << 8) + str[i] - 'a' + 1) % size;
         i++;
     }
     return hash;
@@ -34,9 +34,11 @@ int hash(char *str, int size) {
 int doubleHash(char *str, HashMap *hashMap) {
     int i = 0;
     int firstHash = hash(str, (*hashMap).size);
-    while (1) {
-        if ((*hashMap).array[(firstHash + i) * (i + 1)].key == 0 || (strcmp((*hashMap).array[(firstHash + i) * (i + 1)].key, str)) == 0) {
-            return (firstHash + i) * (i + 1);
+    char* key;
+    while (TRUE) {
+        key = (*hashMap).array[((firstHash + i) * (i + 1)) % (*hashMap).size].key;
+        if (key == 0 || (strcmp(key, str)) == 0) {
+            return ((firstHash + i) * (i + 1)) % (*hashMap).size;
         } else {
             i++;
         }
@@ -72,4 +74,8 @@ void add_new_element(HashMap *hashMap, char *key, int value) {
 
 int getValue(HashMap *hashMap, char* str) {
     return (*hashMap).array[doubleHash(str, hashMap)].value;
+}
+
+void deconstractor(HashMap *hashMap) {
+    free((*hashMap).array);
 }

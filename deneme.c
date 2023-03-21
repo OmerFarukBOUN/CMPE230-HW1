@@ -7,18 +7,41 @@
 
 char mainStatement[256]; // the given statement
 int counter = 0; // iterator
-char *deflastChar = 0; // default last character
+char deflastChar[2] = {'%', 0}; // default last character
 bool8 error = FALSE; // were there any errors
 HashMap variables; // hashmap of variables
-HashMap operations;
-HashMap functions;
+//HashMap operations;
+//HashMap functions;
+//char operatorStack[256];
+//int OSC = 0;
+//int noStack[256];
+//int NSC = 0;
 
 
 int main() {
+    HashMap *vc = &variables;
     variables = initializeHashMap();
-    scanf("%s", mainStatement);
-    //solveStatement(mainStatement);
-    printf("%d", getString());
+    while (TRUE) {
+        if (fgets(mainStatement, 256, stdin) != NULL) {
+            for(int i = 0; i<256;i++) {
+                if (mainStatement[i] == '\n') {mainStatement[i] = 0;}
+            }
+            solveStatement(mainStatement);
+            counter = 0;
+            error = FALSE;
+        } else {
+            deconstractor(&variables);
+            return 0;
+        }
+    }
+
+//    int flag = 0;
+//    while (TRUE) {
+//        flag = scanf("%256[^\n]", mainStatement);
+//        if (flag == EOF) { return 0; }
+//        solveStatement(mainStatement);
+//    }
+    //printf("%d", getString());
 }
 
 /*
@@ -27,7 +50,8 @@ int main() {
  * this function checks if the statement is an assignment or expression and proceeds accordingly.
 */
 void solveStatement(char *statement) {
-    char *assignedVar = getVar();
+    char assignedVar[256];
+    getVar(assignedVar);
     int solution;
     dismissblank();
     // checks if this is an assignment
@@ -35,16 +59,16 @@ void solveStatement(char *statement) {
         counter = 0;
         solution = solveExpr(deflastChar);
         if (error) {
-            printf("%s", "Error!");
+            printf("%s\n", "Error!");
         } else {
-            printf("%d", solution);
+            printf("%d\n", solution);
         }
     } else {
         counter++;
         dismissblank();
         solution = solveExpr(deflastChar);
         if (error) {
-            printf("%s", "Error!");
+            printf("%s\n", "Error!");
         } else {
             add_new_element(&variables, assignedVar, solution);
         }
@@ -57,8 +81,9 @@ void solveStatement(char *statement) {
  * starting from the counter, this function gets the nearest string, solves it and returns its value
 */
 int getString() {
-    char lastforparanthesis[2] = {')', 0};
-    char lastforfunc[2] = {',', 0};
+    char lastforparanthesis[3] = {')', '%', 0};
+    char lastforfunc[3] = {',', '%', 0};
+    dismissblank();
     // checks if it is a (<expression>)
     if (mainStatement[counter] == '(') {
         counter++;
@@ -74,7 +99,8 @@ int getString() {
     // checks if it is a <var> | func(<expression>, <expression>) | not(<expression>)
     if ((mainStatement[counter] >= 'A' && mainStatement[counter] <= 'Z') ||
         (mainStatement[counter] >= 'a' && mainStatement[counter] <= 'z')) {
-        char *str = getVar();
+        char str[256];
+        getVar(str);
         int right;
         int left;
         dismissblank();
@@ -191,7 +217,7 @@ int getString() {
     if ((mainStatement[counter] >= '0' && mainStatement[counter] <= '9')) {
         int solution = 0;
         while ((mainStatement[counter] >= '0' && mainStatement[counter] <= '9')) {
-            solution = 10*solution + (mainStatement[counter]-'0');
+            solution = 10 * solution + (mainStatement[counter] - '0');
             counter++;
         }
         return solution;
@@ -201,34 +227,45 @@ int getString() {
 
 /*
  * solves expression starting from the counter
+ * stays in the last character
  */
 int solveExpr(char *last) {
     if (error) {
-
+        return 0;
     }
     dismissblank();
-
-    dismissblank();
-    return 5;
+    int left = getString();
+    char operator1 = mainStatement[counter];
+    return solveOperation(left, operator1, last);
 }
 
-// gets ooperation
-int getOper() {
+// gets operation
+// stays in the current operator
 
+int getOper(char op) {
+    dismissblank();
+    if (op == '|') { return or; }
+    if (op == '&') { return and; }
+    if (op == '+') { return sum; }
+    if (op == '-') { return min; }
+    if (op == '*') { return mul; }
+    return notoperator;
 }
 
 // gets the nearest string from the counter
-char *getVar() {
-    char *assignedvar;
-    for (counter = 0; counter < 256; counter++) {
+void getVar(char *assignedvar) {
+    dismissblank();
+    for (int i = 0; i < 256; i++) {
         if ((mainStatement[counter] >= 'A' && mainStatement[counter] <= 'Z') ||
             (mainStatement[counter] >= 'a' && mainStatement[counter] <= 'z')) {
-            assignedvar[counter] = mainStatement[counter];
+            assignedvar[i] = mainStatement[counter];
+            counter++;
         } else {
-            assignedvar[counter] = 0;
-            return assignedvar;
+            assignedvar[i] = 0;
+            return;
         }
     }
+    dismissblank();
 }
 
 //dismisses all blanks until it hits something else
@@ -242,18 +279,95 @@ int solveFunc() {
 
 }
 
-void darlandum(int* left, int* right) {
+//gets counter left in operator, leaves counter in second operator
+int solveOperation(int left, char op, char *last) {
+    int i = 0;
+    if (op == 0) {
+        return left;
+    }
+    while (last[i] != 0) {
+        if (op == last[i]) {
+            return left;
+        }
+        i++;
+    }
     counter++;
+    int right = getString();
     dismissblank();
-    *left = solveExpr(lastforfunc);
-    if (mainStatement[counter] != ',') {
-        error = TRUE;
-        return;
+    char secondop = mainStatement[counter];
+    if (getOper(op) >= getOper(secondop)) {
+        if (op == '|') { return solveOperation(left || right, secondop, last); }
+        if (op == '&') { return solveOperation(left && right, secondop, last); }
+        if (op == '-') { return solveOperation(left - right, secondop, last); }
+        if (op == '+') { return solveOperation(left + right, secondop, last); }
+        if (op == '*') { return solveOperation(left * right, secondop, last); }
+    } else {
+        if (op == '|') { return left || solveOperation(right, secondop, last); }
+        if (op == '&') { return left && solveOperation(right, secondop, last); }
+        if (op == '-') { return left - solveOperation(right, secondop, last); }
+        if (op == '+') { return left + solveOperation(right, secondop, last); }
+        if (op == '*') { return left * solveOperation(right, secondop, last); }
     }
-    counter++;
-    *right = solveExpr(lastforparanthesis);
-    if (mainStatement[counter] != ')') {
-        error = TRUE;
-        return;
-    }
+    error = TRUE;
+    return 0;
 }
+
+//void darlandum(int* left, int* right) {
+//    counter++;
+//    dismissblank();
+//    *left = solveExpr(lastforfunc);
+//    if (mainStatement[counter] != ',') {
+//        error = TRUE;
+//        return;
+//    }
+//    counter++;
+//    *right = solveExpr(lastforparanthesis);
+//    if (mainStatement[counter] != ')') {
+//        error = TRUE;
+//        return;
+//    }
+//}
+
+//void add_new_operator(char op) {
+//    operatorStack[OSC] = op;
+//    OSC++;
+//}
+//
+//int pop_operatorStack() {
+//    if (OSC == 0) {
+//        error = TRUE;
+//        return 0;
+//    }
+//    OSC--;
+//    return operatorStack[OSC];
+//}
+//
+//int seek_operatorStack() {
+//    if (OSC == 0) {
+//        error = TRUE;
+//        return 0;
+//    }
+//    return operatorStack[OSC - 1];
+//}
+//
+//void add_new_int(int num) {
+//    noStack[NSC] = num;
+//    NSC++;
+//}
+//
+//int pop_intStack() {
+//    if (NSC == 0) {
+//        error = TRUE;
+//        return 0;
+//    }
+//    NSC--;
+//    return noStack[NSC];
+//}
+//
+//int seek_intStack() {
+//    if (NSC == 0) {
+//        error = TRUE;
+//        return 0;
+//    }
+//    return noStack[NSC - 1];
+//}
