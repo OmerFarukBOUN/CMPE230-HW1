@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define hashmap_min_size 10
+#define hashmap_min_size 257
 #define max_load 0.5f
 #define size_factor 2
 
@@ -37,7 +37,7 @@ int doubleHash(char *str, HashMap *hashMap) {
     char* key;
     while (TRUE) {
         key = (*hashMap).array[((firstHash + i) * (i + 1)) % (*hashMap).size].key;
-        if (key == 0 || (strcmp(key, str)) == 0) {
+        if (key == 0 || (chadstrcmp(key, str)) == 0) {
             return ((firstHash + i) * (i + 1)) % (*hashMap).size;
         } else {
             i++;
@@ -77,5 +77,25 @@ int getValue(HashMap *hashMap, char* str) {
 }
 
 void deconstractor(HashMap *hashMap) {
+    for(int i = 0; i<(*hashMap).size; i++) {
+        if ((*hashMap).array[i].key != 0) {
+            free((*hashMap).array[i].key);
+        }
+    }
     free((*hashMap).array);
+}
+
+
+int chadstrcmp(char *str1, char*str2) {
+    int i = 0;
+    while(str1[i] !='\0' && str2[i] != '\0') {
+        if(str1[i] != str2[i]) {
+            return 1;
+        }
+        i++;
+    }
+    if (str1[i] =='\0' && str2[i] == '\0') {
+        return 0;
+    }
+    return 1;
 }

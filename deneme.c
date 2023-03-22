@@ -21,11 +21,14 @@ HashMap variables; // hashmap of variables
 int main() {
     HashMap *vc = &variables;
     variables = initializeHashMap();
+//    add_new_element(&variables,"bruh", 5);
+//    printf("%d", getValue(&variables, "bruh"));
     while (TRUE) {
         if (fgets(mainStatement, 256, stdin) != NULL) {
             for(int i = 0; i<256;i++) {
                 if (mainStatement[i] == '\n') {mainStatement[i] = 0;}
             }
+            char *ha = mainStatement;
             solveStatement(mainStatement);
             counter = 0;
             error = FALSE;
@@ -50,12 +53,12 @@ int main() {
  * this function checks if the statement is an assignment or expression and proceeds accordingly.
 */
 void solveStatement(char *statement) {
-    char assignedVar[256];
+    char *assignedVar = calloc(256, sizeof(char));
     getVar(assignedVar);
     int solution;
     dismissblank();
     // checks if this is an assignment
-    if (*assignedVar == 0 || (mainStatement[counter] != '=')) {
+    if (*assignedVar == '\0' || (mainStatement[counter] != '=')) {
         counter = 0;
         solution = solveExpr(deflastChar);
         if (error) {
@@ -105,7 +108,7 @@ int getString() {
         int left;
         dismissblank();
         // checks if it is a func(<expression>, <expression>) | not(<expression>)
-        if (strcmp(str, "xor") == 0) {
+        if (chadstrcmp(str, "xor") == 0) {
             if (mainStatement[counter] == '(') {
                 counter++;
                 dismissblank();
@@ -120,10 +123,14 @@ int getString() {
                     error = TRUE;
                     return 0;
                 }
+                counter++;
                 return left ^ right;
+            } else {
+                error = TRUE;
+                return 0;
             }
         }
-        if (strcmp(str, "ls") == 0) {
+        if (chadstrcmp(str, "ls") == 0) {
             if (mainStatement[counter] == '(') {
                 counter++;
                 dismissblank();
@@ -138,10 +145,14 @@ int getString() {
                     error = TRUE;
                     return 0;
                 }
+                counter++;
                 return left << right;
+            } else {
+                error = TRUE;
+                return 0;
             }
         }
-        if (strcmp(str, "rs") == 0) {
+        if (chadstrcmp(str, "rs") == 0) {
             if (mainStatement[counter] == '(') {
                 counter++;
                 dismissblank();
@@ -156,10 +167,14 @@ int getString() {
                     error = TRUE;
                     return 0;
                 }
+                counter++;
                 return left >> right;
+            } else {
+                error = TRUE;
+                return 0;
             }
         }
-        if (strcmp(str, "lr") == 0) {
+        if (chadstrcmp(str, "lr") == 0) {
             if (mainStatement[counter] == '(') {
                 counter++;
                 dismissblank();
@@ -175,10 +190,14 @@ int getString() {
                     return 0;
                 }
                 right %= 16;
-                return (left << right) || (left >> (16 - right));
+                counter++;
+                return (left << right) | (left >> (16 - right));
+            } else {
+                error = TRUE;
+                return 0;
             }
         }
-        if (strcmp(str, "rr") == 0) {
+        if (chadstrcmp(str, "rr") == 0) {
             if (mainStatement[counter] == '(') {
                 counter++;
                 dismissblank();
@@ -195,20 +214,27 @@ int getString() {
                 }
                 counter++;
                 right %= 16;
-                return (left >> right) || (left << (16 - right));
+                return (left >> right) | (left << (16 - right));
+            } else {
+                error = TRUE;
+                return 0;
             }
         }
         // checks if it is a not(<expression>)
-        if (strcmp(str, "not") == 0) {
+        if (chadstrcmp(str, "not") == 0) {
             if (mainStatement[counter] == '(') {
                 counter++;
                 dismissblank();
-                left = solveExpr(lastforfunc);
+                left = solveExpr(lastforparanthesis);
                 if (mainStatement[counter] != ')') {
                     error = TRUE;
                     return 0;
                 }
+                counter++;
                 return ~left;
+            } else {
+                error = TRUE;
+                return 0;
             }
         }
         return getValue(&variables, str);
@@ -222,6 +248,8 @@ int getString() {
         }
         return solution;
     }
+    error = TRUE;
+    return 0;
 }
 
 
@@ -235,6 +263,7 @@ int solveExpr(char *last) {
     }
     dismissblank();
     int left = getString();
+    dismissblank();
     char operator1 = mainStatement[counter];
     return solveOperation(left, operator1, last);
 }
@@ -262,10 +291,10 @@ void getVar(char *assignedvar) {
             counter++;
         } else {
             assignedvar[i] = 0;
+            dismissblank();
             return;
         }
     }
-    dismissblank();
 }
 
 //dismisses all blanks until it hits something else
@@ -296,14 +325,14 @@ int solveOperation(int left, char op, char *last) {
     dismissblank();
     char secondop = mainStatement[counter];
     if (getOper(op) >= getOper(secondop)) {
-        if (op == '|') { return solveOperation(left || right, secondop, last); }
-        if (op == '&') { return solveOperation(left && right, secondop, last); }
+        if (op == '|') { return solveOperation(left | right, secondop, last); }
+        if (op == '&') { return solveOperation(left & right, secondop, last); }
         if (op == '-') { return solveOperation(left - right, secondop, last); }
         if (op == '+') { return solveOperation(left + right, secondop, last); }
         if (op == '*') { return solveOperation(left * right, secondop, last); }
     } else {
-        if (op == '|') { return left || solveOperation(right, secondop, last); }
-        if (op == '&') { return left && solveOperation(right, secondop, last); }
+        if (op == '|') { return left | solveOperation(right, secondop, last); }
+        if (op == '&') { return left & solveOperation(right, secondop, last); }
         if (op == '-') { return left - solveOperation(right, secondop, last); }
         if (op == '+') { return left + solveOperation(right, secondop, last); }
         if (op == '*') { return left * solveOperation(right, secondop, last); }
