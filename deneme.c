@@ -1,72 +1,83 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <ctype.h>
 #include "hashmap.h"
 #include "standart.h"
 #include "deneme.h"
 
-char mainStatement[256]; // the given statement
-int counter = 0; // iterator
-char deflastChar[2] = {'%', 0}; // default last character
-bool8 error = FALSE; // were there any errors
-HashMap variables; // hashmap of variables
-//HashMap operations;
-//HashMap functions;
-//char operatorStack[256];
-//int OSC = 0;
-//int noStack[256];
-//int NSC = 0;
+char mainStatement[257]; // The given statement
+int counter = 0; // Iterator
+char deflastChar[2] = {'%', 0}; // Our default last character
+char lastforparanthesis[3] = {')', '%', 0}; // Last characters for expressions inside parenthesis
+char lastforfunc[3] = {',', '%', 0}; // Last characters for expressions inside functions
+bool8 error = FALSE; // Error checker flag
+HashMap variables; // Hashmap of variables
+char *functions[6] = {"xor", "ls", "rs", "lr", "rr", "not"}; // Array of function names
 
 
+// This is our main function. It takes inputs until our program terminates
 int main() {
-    HashMap *vc = &variables;
+    /// For debugging purposes
+    // HashMap *vc = &variables;
+
+    // Initialization of HashMap
     variables = initializeHashMap();
-//    add_new_element(&variables,"bruh", 5);
-//    printf("%d", getValue(&variables, "bruh"));
+
+    /// F.d.p
+    //add_new_element(&variables,"bruh", 5);
+    //printf("%d", getValue(&variables, "bruh"));
+
+    // Our main loop
     while (TRUE) {
-        if (fgets(mainStatement, 256, stdin) != NULL) {
-            for(int i = 0; i<256;i++) {
-                if (mainStatement[i] == '\n') {mainStatement[i] = 0;}
+        /// (We will turn 0 s to '\n' s later on)
+        // Reading and solving the input
+        printf("%s", "> ");
+        if (fgets(mainStatement, 257, stdin) != NULL) {
+            for (int i = 0; i < 257; i++) {
+                if (mainStatement[i] == '\n') { mainStatement[i] = 0; }
             }
-            char *ha = mainStatement;
-            solveStatement(mainStatement);
+            //char *ha = mainStatement;
+            solveStatement();
             counter = 0;
             error = FALSE;
         } else {
+            // In order to free allocated memories
             deconstractor(&variables);
             return 0;
         }
     }
-
-//    int flag = 0;
-//    while (TRUE) {
-//        flag = scanf("%256[^\n]", mainStatement);
-//        if (flag == EOF) { return 0; }
-//        solveStatement(mainStatement);
-//    }
-    //printf("%d", getString());
 }
 
 /*
+ * Our BNF rules for creating statements is (shortly):
  * <statement> := <assignment> | <expression>
  * <assignment> := <var> = <expression>
- * this function checks if the statement is an assignment or expression and proceeds accordingly.
+ * This function checks if the statement is an assignment or expression and proceeds accordingly
 */
-void solveStatement(char *statement) {
-    char *assignedVar = calloc(256, sizeof(char));
+void solveStatement() {
+    char *assignedVar = calloc(257, sizeof(char));
     getVar(assignedVar);
-    int solution;
+    long long int solution;
     dismissblank();
-    // checks if this is an assignment
+    // Checks if this is an expression or an assignment
     if (*assignedVar == '\0' || (mainStatement[counter] != '=')) {
+        if (*assignedVar == '\0' && (mainStatement[counter] == '\0'||mainStatement[counter] == '%')) { return;}
         counter = 0;
         solution = solveExpr(deflastChar);
         if (error) {
             printf("%s\n", "Error!");
         } else {
-            printf("%d\n", solution);
+            printf("%lld\n", solution);
         }
-    } else {
+    }
+    else {
+        // Checks if the variable's name is a function name
+        for (int i = 0; i < 6; i++) {
+            if (chadstrcmp(functions[i], assignedVar) == 0) {
+                printf("%s\n", "Error!");
+                return;
+            }
+        }
         counter++;
         dismissblank();
         solution = solveExpr(deflastChar);
@@ -80,18 +91,17 @@ void solveStatement(char *statement) {
 }
 
 /*
+ * Our BNF rules for creating strings is (shortly):
  * <string> := (<expression>) | <var> | func(<expression>, <expression>) | not(<expression>) | <num>
- * starting from the counter, this function gets the nearest string, solves it and returns its value
+ * Starting from the counter, this function gets the nearest string, solves it and returns its value
 */
-int getString() {
-    char lastforparanthesis[3] = {')', '%', 0};
-    char lastforfunc[3] = {',', '%', 0};
+long long int getString() {
     dismissblank();
-    // checks if it is a (<expression>)
+    // Checks if it is a (<expression>)
     if (mainStatement[counter] == '(') {
         counter++;
         dismissblank();
-        int solution = solveExpr(lastforparanthesis);
+        long long int solution = solveExpr(lastforparanthesis);
         if (mainStatement[counter] != ')') {
             error = TRUE;
             return 0;
@@ -99,139 +109,58 @@ int getString() {
         counter++;
         return solution;
     }
-    // checks if it is a <var> | func(<expression>, <expression>) | not(<expression>)
+    // Checks if it is a <var> | func(<expression>, <expression>) | not(<expression>)
     if ((mainStatement[counter] >= 'A' && mainStatement[counter] <= 'Z') ||
         (mainStatement[counter] >= 'a' && mainStatement[counter] <= 'z')) {
-        char str[256];
+        char str[257];
         getVar(str);
-        int right;
-        int left;
+        long long int *right;
+        long long int *left;
         dismissblank();
-        // checks if it is a func(<expression>, <expression>) | not(<expression>)
+        // Checks if it is a func(<expression>, <expression>) | not(<expression>)
         if (chadstrcmp(str, "xor") == 0) {
-            if (mainStatement[counter] == '(') {
-                counter++;
-                dismissblank();
-                left = solveExpr(lastforfunc);
-                if (mainStatement[counter] != ',') {
-                    error = TRUE;
-                    return 0;
-                }
-                counter++;
-                right = solveExpr(lastforparanthesis);
-                if (mainStatement[counter] != ')') {
-                    error = TRUE;
-                    return 0;
-                }
-                counter++;
-                return left ^ right;
-            } else {
-                error = TRUE;
-                return 0;
-            }
+            initialize_sides(left, right);
+            if (error) { return 0; }
+            return *left ^ *right;
         }
+        // Checks if it is a ls(<expression>, <expression>)
         if (chadstrcmp(str, "ls") == 0) {
-            if (mainStatement[counter] == '(') {
-                counter++;
-                dismissblank();
-                left = solveExpr(lastforfunc);
-                if (mainStatement[counter] != ',') {
-                    error = TRUE;
-                    return 0;
-                }
-                counter++;
-                right = solveExpr(lastforparanthesis);
-                if (mainStatement[counter] != ')') {
-                    error = TRUE;
-                    return 0;
-                }
-                counter++;
-                return left << right;
-            } else {
-                error = TRUE;
-                return 0;
-            }
+            initialize_sides(left, right);
+            if (error) { return 0; }
+            return *left << *right;
         }
+        // Checks if it is a rs(<expression>, <expression>)
         if (chadstrcmp(str, "rs") == 0) {
-            if (mainStatement[counter] == '(') {
-                counter++;
-                dismissblank();
-                left = solveExpr(lastforfunc);
-                if (mainStatement[counter] != ',') {
-                    error = TRUE;
-                    return 0;
-                }
-                counter++;
-                right = solveExpr(lastforparanthesis);
-                if (mainStatement[counter] != ')') {
-                    error = TRUE;
-                    return 0;
-                }
-                counter++;
-                return left >> right;
-            } else {
-                error = TRUE;
-                return 0;
-            }
+            initialize_sides(left, right);
+            if (error) { return 0; }
+            return *left >> *right;
         }
+        // Checks if it is a lr(<expression>, <expression>)
         if (chadstrcmp(str, "lr") == 0) {
-            if (mainStatement[counter] == '(') {
-                counter++;
-                dismissblank();
-                left = solveExpr(lastforfunc);
-                if (mainStatement[counter] != ',') {
-                    error = TRUE;
-                    return 0;
-                }
-                counter++;
-                right = solveExpr(lastforparanthesis);
-                if (mainStatement[counter] != ')') {
-                    error = TRUE;
-                    return 0;
-                }
-                right %= 16;
-                counter++;
-                return (left << right) | (left >> (16 - right));
-            } else {
-                error = TRUE;
-                return 0;
-            }
+            initialize_sides(left, right);
+            if (error) { return 0; }
+            *right %= 64;
+            return (*left << *right) | (*left >> (64 - *right));
         }
+        // Checks if it is a rr(<expression>, <expression>)
         if (chadstrcmp(str, "rr") == 0) {
-            if (mainStatement[counter] == '(') {
-                counter++;
-                dismissblank();
-                left = solveExpr(lastforfunc);
-                if (mainStatement[counter] != ',') {
-                    error = TRUE;
-                    return 0;
-                }
-                counter++;
-                right = solveExpr(lastforparanthesis);
-                if (mainStatement[counter] != ')') {
-                    error = TRUE;
-                    return 0;
-                }
-                counter++;
-                right %= 16;
-                return (left >> right) | (left << (16 - right));
-            } else {
-                error = TRUE;
-                return 0;
-            }
+            initialize_sides(left, right);
+            *right %= 64;
+            if (error) { return 0; }
+            return (*left >> *right) | (*left << (64 - *right));
         }
-        // checks if it is a not(<expression>)
+        // Checks if it is a not(<expression>)
         if (chadstrcmp(str, "not") == 0) {
             if (mainStatement[counter] == '(') {
                 counter++;
                 dismissblank();
-                left = solveExpr(lastforparanthesis);
+                *left = solveExpr(lastforparanthesis);
                 if (mainStatement[counter] != ')') {
                     error = TRUE;
                     return 0;
                 }
                 counter++;
-                return ~left;
+                return ~*left;
             } else {
                 error = TRUE;
                 return 0;
@@ -239,9 +168,9 @@ int getString() {
         }
         return getValue(&variables, str);
     }
-    // checks if it is a <num>
+    // Checks if it is a <num>
     if ((mainStatement[counter] >= '0' && mainStatement[counter] <= '9')) {
-        int solution = 0;
+        long long int solution = 0;
         while ((mainStatement[counter] >= '0' && mainStatement[counter] <= '9')) {
             solution = 10 * solution + (mainStatement[counter] - '0');
             counter++;
@@ -254,24 +183,23 @@ int getString() {
 
 
 /*
- * solves expression starting from the counter
- * stays in the last character
+ * Solves expression starting from the counter
+ * (Stays in the last character)
  */
-int solveExpr(char *last) {
+long long int solveExpr(char *last) {
     if (error) {
         return 0;
     }
     dismissblank();
-    int left = getString();
+    long long int left = getString();
     dismissblank();
     char operator1 = mainStatement[counter];
     return solveOperation(left, operator1, last);
 }
 
-// gets operation
-// stays in the current operator
-
-int getOper(char op) {
+// Gets operation (stays in the current operator)
+// Returns to precedence of the given operator
+long long int getOper(char op) {
     dismissblank();
     if (op == '|') { return or; }
     if (op == '&') { return and; }
@@ -281,10 +209,10 @@ int getOper(char op) {
     return notoperator;
 }
 
-// gets the nearest string from the counter
+// Gets the nearest variable from the counter
 void getVar(char *assignedvar) {
     dismissblank();
-    for (int i = 0; i < 256; i++) {
+    for (int i = 0; i < 257; i++) {
         if ((mainStatement[counter] >= 'A' && mainStatement[counter] <= 'Z') ||
             (mainStatement[counter] >= 'a' && mainStatement[counter] <= 'z')) {
             assignedvar[i] = mainStatement[counter];
@@ -297,19 +225,15 @@ void getVar(char *assignedvar) {
     }
 }
 
-//dismisses all blanks until it hits something else
+// Dismisses all blanks until it hits something else
 void dismissblank() {
-    while (mainStatement[counter] == ' ') {
+    while (isspace(mainStatement[counter])) {
         counter++;
     }
 }
 
-int solveFunc() {
-
-}
-
-//gets counter left in operator, leaves counter in second operator
-int solveOperation(int left, char op, char *last) {
+// Solves operations (from left to right) in a recursive manner
+long long int solveOperation(long long int left, char op, char *last) {
     int i = 0;
     if (op == 0) {
         return left;
@@ -321,7 +245,7 @@ int solveOperation(int left, char op, char *last) {
         i++;
     }
     counter++;
-    int right = getString();
+    long long int right = getString();
     dismissblank();
     char secondop = mainStatement[counter];
     if (getOper(op) >= getOper(secondop)) {
@@ -341,62 +265,24 @@ int solveOperation(int left, char op, char *last) {
     return 0;
 }
 
-//void darlandum(int* left, int* right) {
-//    counter++;
-//    dismissblank();
-//    *left = solveExpr(lastforfunc);
-//    if (mainStatement[counter] != ',') {
-//        error = TRUE;
-//        return;
-//    }
-//    counter++;
-//    *right = solveExpr(lastforparanthesis);
-//    if (mainStatement[counter] != ')') {
-//        error = TRUE;
-//        return;
-//    }
-//}
-
-//void add_new_operator(char op) {
-//    operatorStack[OSC] = op;
-//    OSC++;
-//}
-//
-//int pop_operatorStack() {
-//    if (OSC == 0) {
-//        error = TRUE;
-//        return 0;
-//    }
-//    OSC--;
-//    return operatorStack[OSC];
-//}
-//
-//int seek_operatorStack() {
-//    if (OSC == 0) {
-//        error = TRUE;
-//        return 0;
-//    }
-//    return operatorStack[OSC - 1];
-//}
-//
-//void add_new_int(int num) {
-//    noStack[NSC] = num;
-//    NSC++;
-//}
-//
-//int pop_intStack() {
-//    if (NSC == 0) {
-//        error = TRUE;
-//        return 0;
-//    }
-//    NSC--;
-//    return noStack[NSC];
-//}
-//
-//int seek_intStack() {
-//    if (NSC == 0) {
-//        error = TRUE;
-//        return 0;
-//    }
-//    return noStack[NSC - 1];
-//}
+void initialize_sides(long long int *left, long long int *right) {
+    if (mainStatement[counter] == '(') {
+        counter++;
+        dismissblank();
+        *left = solveExpr(lastforfunc);
+        if (mainStatement[counter] != ',') {
+            error = TRUE;
+            return;
+        }
+        counter++;
+        *right = solveExpr(lastforparanthesis);
+        if (mainStatement[counter] != ')') {
+            error = TRUE;
+            return;
+        }
+        counter++;
+    } else {
+        error = TRUE;
+        return;
+    }
+}

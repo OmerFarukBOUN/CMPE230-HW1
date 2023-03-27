@@ -3,26 +3,15 @@
 #include <string.h>
 #include "standart.h"
 
-#define min 3
-
-void solveStatement(char *);
-int getString();
-int solveExpr(char *);
-int getOper(char);
+void solveStatement();
+long long int getString();
+long long int solveExpr(char *);
+long long int getOper(char);
 void getVar(char *);
 void dismissblank();
-int checkiffunc(char *);
-int solveOperation(int, char, char*);
+long long int solveOperation(long long int, char, char*);
+void initialize_sides(long long int*, long long int*);
 
-//enum functions {
-//    notfunc,
-//    xor,
-//    ls,
-//    rs,
-//    lr,
-//    rr,
-//    not,
-//};
 
 enum operator {
     notoperator,
@@ -32,3 +21,4 @@ enum operator {
     mul,
 };
 
+#define min sum
