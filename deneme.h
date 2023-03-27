@@ -3,20 +3,22 @@
 #include <string.h>
 #include "standart.h"
 
-void solveStatement(char *);
-int getString();
-int solveExpr(char *);
-int getOper();
-char* getVar();
+void solveStatement();
+long long int getString();
+long long int solveExpr(char *);
+long long int getOper(char);
+void getVar(char *);
 void dismissblank();
-int checkiffunc(char *);
+long long int solveOperation(long long int, char, char*);
+void initialize_sides(long long int*, long long int*);
 
-enum functions {
-    notfunc,
-    xor,
-    ls,
-    rs,
-    lr,
-    rr,
-    not,
+
+enum operator {
+    notoperator,
+    or,
+    and,
+    sum,
+    mul,
 };
+
+#define min sum

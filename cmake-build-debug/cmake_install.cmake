@@ -1,4 +1,4 @@
-# Install script for directory: D:/odevler/cmpe230hw1
+# Install script for directory: D:/odevler/CMPE230-HW1-omer
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "D:/odevler/cmpe230hw1/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "D:/odevler/CMPE230-HW1-omer/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
