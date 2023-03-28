@@ -10,7 +10,7 @@ int counter = 0; // Iterator
 char deflastChar[2] = {'%', 0}; // Our default last character
 char lastforparanthesis[3] = {')', '%', 0}; // Last characters for expressions inside parenthesis
 char lastforfunc[3] = {',', '%', 0}; // Last characters for expressions inside functions
-bool8 error = FALSE;gi // Error checker flag
+bool8 error = FALSE; // Error checker flag
 HashMap variables; // Hashmap of variables
 char *functions[6] = {"xor", "ls", "rs", "lr", "rr", "not"}; // Array of function names
 
